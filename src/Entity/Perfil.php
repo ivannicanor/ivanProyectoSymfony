@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PerfilRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PerfilRepository::class)]
@@ -19,8 +21,18 @@ class Perfil
     #[ORM\Column(length: 255)]
     private ?string $descripcion = null;
 
-    #[ORM\ManyToOne(inversedBy: 'perfils')]
-    private ?Estilo $estiloMusicalPreferido = null;
+    /**
+     * @var Collection<int, Estilo>
+     */
+    #[ORM\ManyToMany(targetEntity: Estilo::class)]
+    private Collection $estilosMusicalPreferidos;
+
+    public function __construct()
+    {
+        $this->estilosMusicalPreferidos = new ArrayCollection();
+    }
+
+   
 
     public function getId(): ?int
     {
@@ -51,15 +63,28 @@ class Perfil
         return $this;
     }
 
-    public function getEstiloMusicalPreferido(): ?Estilo
+    /**
+     * @return Collection<int, Estilo>
+     */
+    public function getEstilosMusicalPreferidos(): Collection
     {
-        return $this->estiloMusicalPreferido;
+        return $this->estilosMusicalPreferidos;
     }
 
-    public function setEstiloMusicalPreferido(?Estilo $estiloMusicalPreferido): static
+    public function addEstilosMusicalPreferido(Estilo $estilosMusicalPreferido): static
     {
-        $this->estiloMusicalPreferido = $estiloMusicalPreferido;
+        if (!$this->estilosMusicalPreferidos->contains($estilosMusicalPreferido)) {
+            $this->estilosMusicalPreferidos->add($estilosMusicalPreferido);
+        }
 
         return $this;
     }
+
+    public function removeEstilosMusicalPreferido(Estilo $estilosMusicalPreferido): static
+    {
+        $this->estilosMusicalPreferidos->removeElement($estilosMusicalPreferido);
+
+        return $this;
+    }
+
 }

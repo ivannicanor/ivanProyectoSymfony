@@ -26,21 +26,21 @@ final class UsuarioController extends AbstractController
     public function new(EntityManagerInterface $entityManager): Response
     {
         $perfil = new Perfil();
-        $perfil->setFoto('foto.jpg');
-        $perfil->setDescripcion('Perfil de prueba');
+        $perfil->setFoto('foto_usuario_prueba.png');
+        $perfil->setDescripcion('Perfil de prueba asociado al usuario.');
+        $entityManager->persist($perfil);
 
         $usuario = new Usuario();
-        $usuario->setEmail('test@example.com');
+        $usuario->setEmail('usuario_prueba@example.com');
         $usuario->setPassword('password123');
         $usuario->setNombre('Usuario Prueba');
         $usuario->setFechaNacimiento(new \DateTime('1990-01-01'));
         $usuario->setPerfil($perfil);
-
-        $entityManager->persist($perfil);
+        
         $entityManager->persist($usuario);
         $entityManager->flush();
 
-        return new Response('Usuario creado con éxito: ' . $usuario->getNombre());
+        return new Response('Usuario creado con ID: ' . $usuario->getId());
     }
 
 }

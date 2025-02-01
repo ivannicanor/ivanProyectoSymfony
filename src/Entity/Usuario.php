@@ -28,19 +28,9 @@ class Usuario
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fechaNacimiento = null;
 
-    /**
-     * @var Collection<int, Playlist>
-     */
-    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'propietario')]
-    private Collection $playlists;
-
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Perfil $perfil = null;
 
-    public function __construct()
-    {
-        $this->playlists = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -95,36 +85,6 @@ class Usuario
         return $this;
     }
 
-    /**
-     * @return Collection<int, Playlist>
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(Playlist $playlist): static
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
-            $playlist->setPropietario($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Playlist $playlist): static
-    {
-        if ($this->playlists->removeElement($playlist)) {
-            // set the owning side to null (unless already changed)
-            if ($playlist->getPropietario() === $this) {
-                $playlist->setPropietario(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getPerfil(): ?Perfil
     {
         return $this->perfil;
@@ -136,4 +96,5 @@ class Usuario
 
         return $this;
     }
+
 }

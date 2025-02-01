@@ -26,17 +26,29 @@ final class UsuarioPlaylistController extends AbstractController
     #[Route('/usuarioplaylist/new', name: 'usuarioplaylist_new')]
     public function new(EntityManagerInterface $entityManager): Response
     {
-        $usuario = $entityManager->getRepository(Usuario::class)->find(1); // Obtener un usuario existente
-        $playlist = $entityManager->getRepository(Playlist::class)->find(1); // Obtener una playlist existente
+        $usuario = new Usuario();
+        $usuario->setEmail('usuario_playlist@example.com');
+        $usuario->setPassword('password789');
+        $usuario->setNombre('Usuario Playlist 2');
+        $usuario->setFechaNacimiento(new \DateTime('1992-10-10'));
+        $entityManager->persist($usuario);
+
+        $playlist = new Playlist();
+        $playlist->setNombre('Playlist del Usuario');
+        $playlist->setVisibilidad('privada');
+        $playlist->setReproducciones(30);
+        $playlist->setLikes(15);
+        $playlist->setUsuarioPropietario($usuario);
+        $entityManager->persist($playlist);
 
         $usuarioPlaylist = new UsuarioPlaylist();
+        $usuarioPlaylist->setReproducida(5);
         $usuarioPlaylist->setUsuario($usuario);
         $usuarioPlaylist->setPlaylist($playlist);
-        $usuarioPlaylist->setReproducida(10);
-
+        
         $entityManager->persist($usuarioPlaylist);
         $entityManager->flush();
 
-        return new Response('UsuarioPlaylist creada con éxito.');
+        return new Response('UsuarioPlaylist creada con ID: ' . $usuarioPlaylist->getId());
     }
 }

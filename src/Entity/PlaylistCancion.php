@@ -19,6 +19,7 @@ class PlaylistCancion
     #[ORM\ManyToOne]
     private ?Cancion $cancion = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,4 +48,5 @@ class PlaylistCancion
 
         return $this;
     }
+
 }

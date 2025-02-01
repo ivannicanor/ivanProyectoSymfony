@@ -24,12 +24,12 @@ final class EstiloController extends AbstractController
     public function new(EntityManagerInterface $entityManager): Response
     {
         $estilo = new Estilo();
-        $estilo->setNombre('Pop');
-        $estilo->setDescripcion('Estilo de música pop');
-
+        $estilo->setNombre('Jazz');
+        $estilo->setDescripcion('Estilo musical relajado y sofisticado.');
+        
         $entityManager->persist($estilo);
         $entityManager->flush();
 
-        return new Response('Estilo creado con éxito');
+        return new Response('Estilo creado con ID: ' . $estilo->getId());
     }
 }

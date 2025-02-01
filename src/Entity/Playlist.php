@@ -25,8 +25,10 @@ class Playlist
     #[ORM\Column]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'playlists')]
-    private ?Usuario $propietario = null;
+    #[ORM\ManyToOne]
+    private ?Usuario $usuarioPropietario = null;
+
+  
 
     public function getId(): ?int
     {
@@ -81,15 +83,17 @@ class Playlist
         return $this;
     }
 
-    public function getPropietario(): ?Usuario
+    public function getUsuarioPropietario(): ?Usuario
     {
-        return $this->propietario;
+        return $this->usuarioPropietario;
     }
 
-    public function setPropietario(?Usuario $propietario): static
+    public function setUsuarioPropietario(?Usuario $usuarioPropietario): static
     {
-        $this->propietario = $propietario;
+        $this->usuarioPropietario = $usuarioPropietario;
 
         return $this;
     }
+
+   
 }

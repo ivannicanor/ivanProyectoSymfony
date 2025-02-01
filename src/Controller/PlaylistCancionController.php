@@ -24,17 +24,30 @@ final class PlaylistCancionController extends AbstractController
     #[Route('/playlistcancion/new', name: 'playlistcancion_new')]
     public function new(EntityManagerInterface $entityManager): Response
     {
-        $playlist = $entityManager->getRepository(Playlist::class)->find(1); // Obtener una playlist existente
-        $cancion = $entityManager->getRepository(Cancion::class)->find(1); // Obtener una canción existente
+        $playlist = new Playlist();
+        $playlist->setNombre('Playlist Asociada');
+        $playlist->setVisibilidad('privada');
+        $playlist->setReproducciones(20);
+        $playlist->setLikes(10);
+        $entityManager->persist($playlist);
+
+        $cancion = new Cancion();
+        $cancion->setTitulo('Cancion Asociada');
+        $cancion->setDuracion(180);
+        $cancion->setAlbum('Album Asociado');
+        $cancion->setAutor('Autor Asociado');
+        $cancion->setReproducciones(30);
+        $cancion->setLikes(200);
+        $entityManager->persist($cancion);
 
         $playlistCancion = new PlaylistCancion();
         $playlistCancion->setPlaylist($playlist);
         $playlistCancion->setCancion($cancion);
-
+        
         $entityManager->persist($playlistCancion);
         $entityManager->flush();
 
-        return new Response('PlaylistCancion creada con éxito');
+        return new Response('PlaylistCancion creada con ID: ' . $playlistCancion->getId());
     }
 
 }

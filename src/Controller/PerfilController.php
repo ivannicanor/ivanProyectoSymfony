@@ -26,18 +26,18 @@ final class PerfilController extends AbstractController
     {
         $estilo = new Estilo();
         $estilo->setNombre('Rock');
-        $estilo->setDescripcion('Estilo de música rock');
+        $estilo->setDescripcion('Estilo musical orientado al rock clásico.');
+        $entityManager->persist($estilo);
 
         $perfil = new Perfil();
-        $perfil->setFoto('perfil.jpg');
-        $perfil->setDescripcion('Perfil de usuario prueba');
-        $perfil->setEstiloMusicalPreferido($estilo);
-
-        $entityManager->persist($estilo);
+        $perfil->setFoto('foto_perfil.png');
+        $perfil->setDescripcion('Perfil de prueba con preferencias musicales.');
+        $perfil->addEstilosMusicalPreferido($estilo);
+        
         $entityManager->persist($perfil);
         $entityManager->flush();
 
-        return new Response('Perfil creado con éxito.');
+        return new Response('Perfil creado con ID: ' . $perfil->getId());
     }
 
 }

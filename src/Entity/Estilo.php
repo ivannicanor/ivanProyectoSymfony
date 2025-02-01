@@ -19,18 +19,7 @@ class Estilo
     private ?string $nombre = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $descripcion = null;
-
-    /**
-     * @var Collection<int, Perfil>
-     */
-    #[ORM\OneToMany(targetEntity: Perfil::class, mappedBy: 'estiloMusicalPreferido')]
-    private Collection $perfils;
-
-    public function __construct()
-    {
-        $this->perfils = new ArrayCollection();
-    }
+    private ?string $descripcion = null;  
 
     public function getId(): ?int
     {
@@ -61,33 +50,5 @@ class Estilo
         return $this;
     }
 
-    /**
-     * @return Collection<int, Perfil>
-     */
-    public function getPerfils(): Collection
-    {
-        return $this->perfils;
-    }
-
-    public function addPerfil(Perfil $perfil): static
-    {
-        if (!$this->perfils->contains($perfil)) {
-            $this->perfils->add($perfil);
-            $perfil->setEstiloMusicalPreferido($this);
-        }
-
-        return $this;
-    }
-
-    public function removePerfil(Perfil $perfil): static
-    {
-        if ($this->perfils->removeElement($perfil)) {
-            // set the owning side to null (unless already changed)
-            if ($perfil->getEstiloMusicalPreferido() === $this) {
-                $perfil->setEstiloMusicalPreferido(null);
-            }
-        }
-
-        return $this;
-    }
+   
 }

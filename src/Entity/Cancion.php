@@ -31,8 +31,10 @@ class Cancion
     #[ORM\Column]
     private ?int $likes = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     private ?Estilo $genero = null;
+
+ 
 
     public function getId(): ?int
     {
@@ -122,4 +124,6 @@ class Cancion
 
         return $this;
     }
+
+   
 }
