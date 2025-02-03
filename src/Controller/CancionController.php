@@ -34,7 +34,6 @@ final class CancionController extends AbstractController
         $cancion->setDuracion(210);
         $cancion->setAlbum('Album de Prueba');
         $cancion->setAutor('Autor Prueba');
-        $cancion->setReproducciones(500);
         $cancion->setLikes(200);
         $cancion->setGenero($estilo);
         

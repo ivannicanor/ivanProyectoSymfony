@@ -6,15 +6,12 @@ use App\Repository\UsuarioPlaylistRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsuarioPlaylistRepository::class)]
-class UsuarioPlaylist
+class UsuarioListenPlaylist
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column]
-    private ?int $reproducida = null;
 
     #[ORM\ManyToOne]
     private ?Usuario $usuario = null;
@@ -29,17 +26,7 @@ class UsuarioPlaylist
         return $this->id;
     }
 
-    public function getReproducida(): ?int
-    {
-        return $this->reproducida;
-    }
-
-    public function setReproducida(int $reproducida): static
-    {
-        $this->reproducida = $reproducida;
-
-        return $this;
-    }
+   
 
     public function getUsuario(): ?Usuario
     {

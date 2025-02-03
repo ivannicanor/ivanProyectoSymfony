@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Playlist;
 use App\Entity\Usuario;
-use App\Entity\UsuarioPlaylist;
+use App\Entity\UsuarioListenPlaylist;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +23,7 @@ final class UsuarioPlaylistController extends AbstractController
     }
 
 
-    #[Route('/usuarioplaylist/new', name: 'usuarioplaylist_new')]
+    #[Route('/UsuarioListenPlaylist/new', name: 'UsuarioListenPlaylist_new')]
     public function new(EntityManagerInterface $entityManager): Response
     {
         $usuario = new Usuario();
@@ -36,19 +36,17 @@ final class UsuarioPlaylistController extends AbstractController
         $playlist = new Playlist();
         $playlist->setNombre('Playlist del Usuario');
         $playlist->setVisibilidad('privada');
-        $playlist->setReproducciones(30);
         $playlist->setLikes(15);
         $playlist->setUsuarioPropietario($usuario);
         $entityManager->persist($playlist);
 
-        $usuarioPlaylist = new UsuarioPlaylist();
-        $usuarioPlaylist->setReproducida(5);
-        $usuarioPlaylist->setUsuario($usuario);
-        $usuarioPlaylist->setPlaylist($playlist);
+        $UsuarioListenPlaylist = new UsuarioListenPlaylist();
+        $UsuarioListenPlaylist->setUsuario($usuario);
+        $UsuarioListenPlaylist->setPlaylist($playlist);
         
-        $entityManager->persist($usuarioPlaylist);
+        $entityManager->persist($UsuarioListenPlaylist);
         $entityManager->flush();
 
-        return new Response('UsuarioPlaylist creada con ID: ' . $usuarioPlaylist->getId());
+        return new Response('UsuarioListenPlaylist creada con ID: ' . $UsuarioListenPlaylist->getId());
     }
 }

@@ -26,7 +26,6 @@ class CancionCrudController extends AbstractCrudController
             IntegerField::new('duracion', 'Duración (s)'),   
             TextField::new('album', 'Álbum'),                
             TextField::new('autor', 'Autor'),               
-            IntegerField::new('reproducciones', 'Reproducciones'), 
             IntegerField::new('likes', 'Likes'),         
 
            

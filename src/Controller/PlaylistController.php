@@ -34,7 +34,6 @@ final class PlaylistController extends AbstractController
         $playlist = new Playlist();
         $playlist->setNombre('Playlist de Prueba');
         $playlist->setVisibilidad('publica');
-        $playlist->setReproducciones(100);
         $playlist->setLikes(50);
         $playlist->setUsuarioPropietario($usuario);
         

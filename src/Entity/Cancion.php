@@ -26,9 +26,6 @@ class Cancion
     private ?string $autor = null;
 
     #[ORM\Column]
-    private ?int $reproducciones = null;
-
-    #[ORM\Column]
     private ?int $likes = null;
 
     #[ORM\ManyToOne]
@@ -89,17 +86,6 @@ class Cancion
         return $this;
     }
 
-    public function getReproducciones(): ?int
-    {
-        return $this->reproducciones;
-    }
-
-    public function setReproducciones(int $reproducciones): static
-    {
-        $this->reproducciones = $reproducciones;
-
-        return $this;
-    }
 
     public function getLikes(): ?int
     {

@@ -27,7 +27,6 @@ final class PlaylistCancionController extends AbstractController
         $playlist = new Playlist();
         $playlist->setNombre('Playlist Asociada');
         $playlist->setVisibilidad('privada');
-        $playlist->setReproducciones(20);
         $playlist->setLikes(10);
         $entityManager->persist($playlist);
 
@@ -36,13 +35,13 @@ final class PlaylistCancionController extends AbstractController
         $cancion->setDuracion(180);
         $cancion->setAlbum('Album Asociado');
         $cancion->setAutor('Autor Asociado');
-        $cancion->setReproducciones(30);
         $cancion->setLikes(200);
         $entityManager->persist($cancion);
 
         $playlistCancion = new PlaylistCancion();
         $playlistCancion->setPlaylist($playlist);
         $playlistCancion->setCancion($cancion);
+        $playlistCancion->setReproducciones(20);
         
         $entityManager->persist($playlistCancion);
         $entityManager->flush();

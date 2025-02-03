@@ -20,9 +20,6 @@ class Playlist
     private ?string $visibilidad = null;
 
     #[ORM\Column]
-    private ?int $reproducciones = null;
-
-    #[ORM\Column]
     private ?int $likes = null;
 
     #[ORM\ManyToOne]
@@ -55,18 +52,6 @@ class Playlist
     public function setVisibilidad(string $visibilidad): static
     {
         $this->visibilidad = $visibilidad;
-
-        return $this;
-    }
-
-    public function getReproducciones(): ?int
-    {
-        return $this->reproducciones;
-    }
-
-    public function setReproducciones(int $reproducciones): static
-    {
-        $this->reproducciones = $reproducciones;
 
         return $this;
     }
