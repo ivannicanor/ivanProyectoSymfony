@@ -28,10 +28,35 @@ class Usuario
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fechaNacimiento = null;
 
+   
+
+    /**
+     * @var Collection<int, Playlist>
+     */
+    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'usuarioPropietario')]
+    private Collection $playlists;
+
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Perfil $perfil = null;
 
+    /**
+     * @var Collection<int, UsuarioListenPlaylist>
+     */
+    #[ORM\OneToMany(targetEntity: UsuarioListenPlaylist::class, mappedBy: 'usuario')]
+    private Collection $usuarioListenPlaylists;
 
+    public function __construct()
+    {
+        $this->playlists = new ArrayCollection();
+        $this->usuarioListenPlaylists = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nombre?? 'Sin nombre';
+        
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -85,6 +110,38 @@ class Usuario
         return $this;
     }
 
+    
+
+    /**
+     * @return Collection<int, Playlist>
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): static
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->setUsuarioPropietario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): static
+    {
+        if ($this->playlists->removeElement($playlist)) {
+            // set the owning side to null (unless already changed)
+            if ($playlist->getUsuarioPropietario() === $this) {
+                $playlist->setUsuarioPropietario(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function getPerfil(): ?Perfil
     {
         return $this->perfil;
@@ -93,6 +150,36 @@ class Usuario
     public function setPerfil(?Perfil $perfil): static
     {
         $this->perfil = $perfil;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsuarioListenPlaylist>
+     */
+    public function getUsuarioListenPlaylists(): Collection
+    {
+        return $this->usuarioListenPlaylists;
+    }
+
+    public function addUsuarioListenPlaylist(UsuarioListenPlaylist $usuarioListenPlaylist): static
+    {
+        if (!$this->usuarioListenPlaylists->contains($usuarioListenPlaylist)) {
+            $this->usuarioListenPlaylists->add($usuarioListenPlaylist);
+            $usuarioListenPlaylist->setUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuarioListenPlaylist(UsuarioListenPlaylist $usuarioListenPlaylist): static
+    {
+        if ($this->usuarioListenPlaylists->removeElement($usuarioListenPlaylist)) {
+            // set the owning side to null (unless already changed)
+            if ($usuarioListenPlaylist->getUsuario() === $this) {
+                $usuarioListenPlaylist->setUsuario(null);
+            }
+        }
 
         return $this;
     }

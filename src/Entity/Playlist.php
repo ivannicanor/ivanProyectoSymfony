@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PlaylistRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
@@ -22,10 +24,36 @@ class Playlist
     #[ORM\Column]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Usuario::class,inversedBy: 'playlists')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Usuario $usuarioPropietario = null;
 
+    /**
+     * @var Collection<int, PlaylistCancion>
+     */
+    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'playlist',cascade:["persist","remove"])]
+    private Collection $playlistCancions;
+
+    /**
+     * @var Collection<int, UsuarioListenPlaylist>
+     */
+    #[ORM\OneToMany(targetEntity: UsuarioListenPlaylist::class, mappedBy: 'playlist')]
+    private Collection $usuarioListenPlaylists;
+
+    public function __construct()
+    {
+        $this->playlistCancions = new ArrayCollection();
+        $this->usuarioListenPlaylists = new ArrayCollection();
+    }
+
+    
+
   
+    public function __toString(): string
+    {
+        return $this->nombre?? 'Sin nombre de playlist';
+        
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +107,68 @@ class Playlist
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, PlaylistCancion>
+     */
+    public function getPlaylistCancions(): Collection
+    {
+        return $this->playlistCancions;
+    }
+
+    public function addPlaylistCancion(PlaylistCancion $playlistCancion): static
+    {
+        if (!$this->playlistCancions->contains($playlistCancion)) {
+            $this->playlistCancions->add($playlistCancion);
+            $playlistCancion->setPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistCancion(PlaylistCancion $playlistCancion): static
+    {
+        if ($this->playlistCancions->removeElement($playlistCancion)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistCancion->getPlaylist() === $this) {
+                $playlistCancion->setPlaylist(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsuarioListenPlaylist>
+     */
+    public function getUsuarioListenPlaylists(): Collection
+    {
+        return $this->usuarioListenPlaylists;
+    }
+
+    public function addUsuarioListenPlaylist(UsuarioListenPlaylist $usuarioListenPlaylist): static
+    {
+        if (!$this->usuarioListenPlaylists->contains($usuarioListenPlaylist)) {
+            $this->usuarioListenPlaylists->add($usuarioListenPlaylist);
+            $usuarioListenPlaylist->setPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuarioListenPlaylist(UsuarioListenPlaylist $usuarioListenPlaylist): static
+    {
+        if ($this->usuarioListenPlaylists->removeElement($usuarioListenPlaylist)) {
+            // set the owning side to null (unless already changed)
+            if ($usuarioListenPlaylist->getPlaylist() === $this) {
+                $usuarioListenPlaylist->setPlaylist(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 
    
 }

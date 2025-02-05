@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CancionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CancionRepository::class)]
@@ -28,10 +30,34 @@ class Cancion
     #[ORM\Column]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne]
+    
+
+    /**
+     * @var Collection<int, PlaylistCancion>
+     */
+    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'cancion')]
+    private Collection $playlistCancions;
+
+    #[ORM\ManyToOne(targetEntity: Estilo::class,inversedBy: 'cancions')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Estilo $genero = null;
 
+
+    
+
+
+    public function __construct()
+    {
+        $this->playlistCancions = new ArrayCollection();
+    }
+
  
+
+    public function __toString(): string
+    {
+        return $this->titulo?? 'Sin titulo';
+        
+    }
 
     public function getId(): ?int
     {
@@ -95,6 +121,38 @@ class Cancion
     public function setLikes(int $likes): static
     {
         $this->likes = $likes;
+
+        return $this;
+    }
+
+   
+
+    /**
+     * @return Collection<int, PlaylistCancion>
+     */
+    public function getPlaylistCancions(): Collection
+    {
+        return $this->playlistCancions;
+    }
+
+    public function addPlaylistCancion(PlaylistCancion $playlistCancion): static
+    {
+        if (!$this->playlistCancions->contains($playlistCancion)) {
+            $this->playlistCancions->add($playlistCancion);
+            $playlistCancion->setCancion($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistCancion(PlaylistCancion $playlistCancion): static
+    {
+        if ($this->playlistCancions->removeElement($playlistCancion)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistCancion->getCancion() === $this) {
+                $playlistCancion->setCancion(null);
+            }
+        }
 
         return $this;
     }

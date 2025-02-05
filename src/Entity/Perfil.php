@@ -24,13 +24,15 @@ class Perfil
     /**
      * @var Collection<int, Estilo>
      */
-    #[ORM\ManyToMany(targetEntity: Estilo::class)]
+    #[ORM\ManyToMany(targetEntity: Estilo::class, inversedBy: 'perfils')]
     private Collection $estilosMusicalPreferidos;
 
     public function __construct()
     {
         $this->estilosMusicalPreferidos = new ArrayCollection();
     }
+
+   
 
    
 
@@ -86,5 +88,7 @@ class Perfil
 
         return $this;
     }
+
+   
 
 }

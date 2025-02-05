@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Cancion;
 use App\Entity\Estilo;
+use App\Entity\Playlist;
+use App\Entity\PlaylistCancion;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -46,6 +48,8 @@ class DashBoardController extends AbstractDashboardController
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
              MenuItem::linkToCrud('Cancion', 'fas fa-list', Cancion::class),
              MenuItem::linkToCrud('Estilo', 'fas fa-list', Estilo::class),
+             MenuItem::linkToCrud('Playlist', 'fas fa-list', Playlist::class),
+             MenuItem::linkToCrud('PlaylistCancion', 'fas fa-list', PlaylistCancion::class),
             ];
     }
 }

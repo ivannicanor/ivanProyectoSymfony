@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Cancion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -26,7 +27,9 @@ class CancionCrudController extends AbstractCrudController
             IntegerField::new('duracion', 'Duración (s)'),   
             TextField::new('album', 'Álbum'),                
             TextField::new('autor', 'Autor'),               
-            IntegerField::new('likes', 'Likes'),         
+            IntegerField::new('likes', 'Likes'),
+            AssociationField::new('genero', 'Genero')
+            ->setFormTypeOption('by_reference', true),             
 
            
         ];
