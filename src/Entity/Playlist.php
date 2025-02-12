@@ -25,7 +25,7 @@ class Playlist
     private ?int $likes = null;
 
     #[ORM\ManyToOne(targetEntity: Usuario::class,inversedBy: 'playlists')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Usuario $usuarioPropietario = null;
 
     /**

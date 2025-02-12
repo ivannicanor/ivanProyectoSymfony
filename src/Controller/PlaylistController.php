@@ -12,14 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PlaylistController extends AbstractController
 {
-    #[Route('/playlist', name: 'app_playlist')]
-    public function index(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PlaylistController.php',
-        ]);
-    }
+    
 
     #[Route('/playlist/new', name: 'playlist_new')]
     public function new(EntityManagerInterface $entityManager): Response
@@ -42,5 +35,39 @@ final class PlaylistController extends AbstractController
 
         return new Response('Playlist creada con ID: ' . $playlist->getId());
     }
+
+    #[Route('/playlist/{id}', name: 'playlist_show', methods: ['GET'])]
+public function showPlaylist(EntityManagerInterface $entityManager, int $id): Response
+{
+    // Obtener la playlist por su ID
+    $playlists = $entityManager->getRepository(Playlist::class)->find($id);
+
+    
+    // Obtener las canciones de la playlist (suponiendo que la entidad tiene una relación con Cancion)
+    $songs = $playlists->getPlaylistCancions(); // Si la relación se llama 'canciones'
+
+
+    $songData = [];
+
+    $musicDirectory = '/songs/';
+    $imageDirectory = '/images/';
+
+    
+    foreach ($songs as $song) {
+        $songData[] = [
+            'name' =>$song->getCancion()->getTitulo(),
+            'imagen' => $imageDirectory . $song->getCancion()->getImagen(),
+            'audio' => $musicDirectory . $song->getCancion()->getArchivo(),
+
+        ];
+    }
+
+
+    return $this->render('reproductor/playlist.html.twig', [
+        'playlists' => $playlists,
+        'songs' => $songData,
+    ]);
+}
+
 
 }

@@ -1,0 +1,341 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MySpotify{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: black;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #1DB954;
+        }
+
+        header .search-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        header input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 250px;
+            margin-right: 10px;
+            
+        }
+
+        header button {
+            background-color: white;
+            color:rgb(0, 0, 0);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .divPrincipal img{
+            height: 30px;
+        }
+
+        .usuarioContenedor img {
+        height: 30px;
+        width: 30px; /* Asegura que el ancho sea igual a la altura */
+        border-radius: 50%; /* Hace que la imagen sea circular */
+        object-fit: cover; /* Ajusta la imagen dentro del contenedor sin deformarla */
+        background-color:rgb(228, 127, 13);
+        }
+
+        nav {
+            background-color: #121212;
+            color: white;
+            padding: 20px;
+            height: calc(100vh - 64px);
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        nav li {
+            padding: 15px 0;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        nav button{
+        background-color: #121212; 
+        color: white;
+        }
+
+        nav button:hover {
+        background-color:rgb(0, 255, 98); 
+        color: white;
+        transform: scale(1.05); /* Efecto de crecimiento al pasar el cursor */
+        }
+
+        nav button:focus {
+        background-color:rgb(16, 83, 3); /* Color más oscuro al hacer clic */
+        outline: none;
+        }
+        
+
+        main {
+            padding: 40px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .divCancion {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            overflow-x: scroll;
+            scrollbar-width: none
+        }
+        .divCancion h1 {
+            width: 100%;
+            text-align: left; /* Alineado a la izquierda */
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .divPlaylist {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            overflow-x: scroll;
+            scrollbar-width: none
+        }
+         .divPlaylist h1 {
+            width: 100%;
+            text-align: left; /* Alineado a la izquierda */
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+
+
+        .song-card {
+            background-color: #181818;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex: 0 0 20%
+        }
+
+        .song-card img {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .song-card p {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        footer {
+            background-color: #121212;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .content-wrapper {
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+
+        .audio-player {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color:rgb(10, 58, 27);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .audio-player audio {
+            width: 90%;
+            max-width: 1200px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+    </style>
+
+
+    <!--aqui podemos observar la parte superior de la pagina-->
+    <div class="w-full h-screen flex flex-col">
+        <!-- Header -->
+        <header>
+            <div class="divPrincipal"> 
+            <a href="{{ path('reproductor_play') }}">
+            <img src="/otrasImagenes/logo.png"></img>
+            MySpotify</a>
+            </div>
+            <!--  barra de busqueda-->
+            <div class="search-bar">
+                <input type="text" placeholder="¿Qué quieres reproducir?">
+                <!--aqui tenemos el reproductor que aun no hace nada-->
+                <button>Buscar</button>
+            </div>
+
+           <!--  aqui añadiremos el icono de incio de Sesion -->
+            <div class="usuarioContenedor">
+                <img src="/otrasImagenes/usuario.png" alt="User">
+            </div>
+
+        </header>
+
+         <!--aqui tenemos la barra que nos mostrara los botones cancion y playlist-->
+        <div class="content-wrapper">
+            <!-- Sidebar -->
+            <nav>
+                <ul>
+                    <li><button onclick="pulsarCancionesInvisiblePlaylist()" id="botonCanciones">Canciones</button></li>
+                    <li><button onclick="pulsarPlaylistInvisibleCancion()" id="botonPlaylist">Playlist</button></li>
+                </ul>
+            </nav>
+
+            <!--aqui tenemos nuestras canciones-->
+            <!-- Main Content -->
+            <main>
+                
+                <div class="divCancion" id="divCancion">
+                <h1>Tus canciones</h1>
+                   <!--Aqui podemos observar nuestro for de la BBDD que nos muestra todas nuestras canciones-->
+                    {% for song in songs %}
+                        <div class="song-card" data-audio="{{ song.audio }}">
+                            <img src="{{ song.imagen }}" alt="Imagen de {{ song.name }}">
+                            <p>{{ song.name }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+                
+                 <div class="divPlaylist" id="divPlaylist">
+                 <h1>Tus Playlist</h1>
+        <!-- Iteramos sobre las playlists pasadas desde el controlador -->
+        {% for playlist in playlists %}
+            <div class="song-card" >
+             <a href="{{ path('playlist_show', { id: playlist.id }) }}">
+                <!-- Imagen de la canción -->
+                <img src="{{ asset(playlist.imagen) }}" alt="Imagen de {{ playlist.nombre }}">
+                
+                
+
+                <!-- Nombre de la canción -->
+                <p>{{ playlist.nombre }}</p>
+
+                <!-- Mostramos los 'likes' si lo deseas -->
+                <p>Likes: {{ playlist.likes }}</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+               
+            </main>
+        </div>
+        
+
+        <!--Aqui tenemos nuestro div de audio aqui podemos observar como es nuestra barra de musica empieza oculta hasta que se muestre una cancion-->
+        <!-- Audio Player -->
+        <div class="audio-player" id="audio-player" style="display: none">
+            <audio id="audio-element" controls></audio>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            &copy; 2025 MySpotify - Todos los derechos reservados.
+        </footer>
+    </div>
+
+    
+
+    <script>
+
+
+
+
+
+
+
+<!-- aqui hacemos que suene la cancion -->
+        const audioElement = document.getElementById('audio-element');
+        const songCards = document.querySelectorAll('.song-card');
+        const divReproductor = document.getElementById('audio-player');
+<!-- aqui le asignamos el click para que ponga la musical al clickar -->
+        songCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const audioSource = card.getAttribute('data-audio');
+                if (audioSource) {
+                    audioElement.src = audioSource;
+                    divReproductor.style="display: flex"
+                    audioElement.play();
+                }
+            });
+        });
+
+
+function pulsarCancionesInvisiblePlaylist() {
+     const divCancion = document.getElementById('divCancion');
+      const divPlaylist = document.getElementById('divPlaylist');
+      const botonCanciones = document.getElementById('botonCanciones');
+      const botonPlaylist = document.getElementById('botonPlaylist');
+
+     divCancion.style="display: flex";
+     divPlaylist.style="display: none";
+     botonCanciones.style="background-color:rgb(16, 83, 3)";
+     botonPlaylist.style="background-color: #121212";
+
+}
+
+function pulsarPlaylistInvisibleCancion() {
+     const divCancion = document.getElementById('divCancion');
+      const divPlaylist = document.getElementById('divPlaylist');
+      const botonCanciones = document.getElementById('botonCanciones');
+      const botonPlaylist = document.getElementById('botonPlaylist');
+
+     divPlaylist.style="display: flex";
+     divCancion.style="display: none";
+     botonCanciones.style="background-color: #121212";
+     botonPlaylist.style="background-color:rgb(16, 83, 3)";
+}
+
+
+
+
+
+    </script>
+{% endblock %}

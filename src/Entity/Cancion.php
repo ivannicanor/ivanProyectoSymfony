@@ -30,7 +30,12 @@ class Cancion
     #[ORM\Column]
     private ?int $likes = null;
 
-    
+    #[ORM\Column(length: 255)]
+    private ?string $archivo = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $imagen = null;
+
 
     /**
      * @var Collection<int, PlaylistCancion>
@@ -41,6 +46,10 @@ class Cancion
     #[ORM\ManyToOne(targetEntity: Estilo::class,inversedBy: 'cancions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Estilo $genero = null;
+
+    
+
+    
 
 
     
@@ -125,7 +134,29 @@ class Cancion
         return $this;
     }
 
-   
+    public function getArchivo(): ?string
+    {
+        return $this->archivo;
+    }
+
+    public function setArchivo(?string $archivo): static
+    {
+        $this->archivo = $archivo;
+
+        return $this;
+    }
+
+    public function getImagen(): ?string
+    {
+        return $this->imagen;
+    }
+
+    public function setImagen(string $imagen): static
+    {
+        $this->imagen = $imagen;
+
+        return $this;
+    }
 
     /**
      * @return Collection<int, PlaylistCancion>
@@ -168,6 +199,8 @@ class Cancion
 
         return $this;
     }
+
+    
 
    
 }
