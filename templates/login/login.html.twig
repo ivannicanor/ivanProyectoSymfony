@@ -1,0 +1,93 @@
+{# templates/login/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+
+{# ... #}
+{% block body %}
+
+{# css #}
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #121212;
+        color: white;
+    }
+    .container {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+    .container h2 {
+        color: #00ff00;
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+    .form-group label {
+        display: block;
+        font-size: 14px;
+    }
+    .input-field {
+        width: 90%;
+        padding: 10px;
+        border: 1px solid #333;
+        background: #252525;
+        color: white;
+        border-radius: 5px;
+    }
+    .login-button {
+        width: 100%;
+        background: #00ff00;
+        color: black;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+        font-weight: bold;
+    }
+    .login-button:hover {
+        background: #00cc00;
+    }
+</style>
+
+{# mi codigo #}
+ {% if error %}
+ <div  class="error-message">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+ {% endif %}
+ <div class="container">
+    <div class="login-box">
+        <form action="{{ path('app_login') }}" method="post" class="login-form">
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="text" id="username" name="_username" value="{{ last_username }}" class="input-field">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="_password" class="input-field">
+            </div>
+            
+            <input type="hidden" name="_target_path" value="/reproductor"> 
+            
+            <button type="submit" class="login-button">Login</button>
+
+            
+           
+
+        </form>
+        <br>
+         <a  href="{{ path('app_register') }}"><button class="login-button">Register</button></a>
+    </div>
+</div>
+{% endblock %}

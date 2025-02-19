@@ -1,0 +1,175 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Estadísticas{% endblock %}
+
+
+{% block body %}
+
+    <div class="container">
+        <h2>Estadísticas de Reproducciones por Playlist</h2>
+        {# las estadisticas #}
+        <canvas id="likesChart"></canvas>
+        <canvas id="reproduccionesChart"></canvas>
+        <canvas id="EdadesChart"></canvas>
+        <canvas id="EstiloReproduccionesChart"></canvas>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        {#  se ejecuta cuando la página ha terminado de cargarse #}
+        document.addEventListener("DOMContentLoaded", function () {
+        //{# hace una solicitud HTTP GET a la URL que devuelve la ruta generada por Symfony (path('estadisticas_datos')) #}
+
+        //reproduciones
+        fetch("{{ path('estadisticas_datosReproducciones') }}")
+            .then(response => response.json())
+            .then(data => {
+                //nombres
+                const labels = data.map(item => item.playlist);
+                //reproducciones
+                const values = data.map(item => item.totalReproducciones);
+                //nuestra estadistica
+                const ctx = document.getElementById('reproduccionesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Reproducciones',
+                            data: values,
+                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                             y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        
+
+
+
+        //likes
+        fetch("{{ path('estadisticas_datosLikes') }}")
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(item => item.playlist);
+                const values = data.map(item => item.totalLikes);
+
+                const ctx = document.getElementById('likesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total likes',
+                            data: values,
+                            backgroundColor: 'rgba(235, 111, 54, 0.5)',
+                            borderColor: 'rgb(235, 94, 51)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                             y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+             //edades
+        fetch("{{ path('estadisticas_datosEdades') }}")
+            .then(response => response.json())
+            .then(data => {
+                //nombres
+                const labels = data.map(item => item.edades);
+                //edades
+                const values = data.map(item => item.numeroConEsaEdad);
+                //nuestra estadistica
+                const ctx = document.getElementById('EdadesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Grupos Edades',
+                            data: values,
+                            backgroundColor: 'rgba(54, 235, 145, 0.5)',
+                            borderColor: 'rgb(126, 235, 54)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                             y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+
+
+             //EstiloReproducciones
+        fetch("{{ path('estadisticas_datosEstiloReproducciones') }}")
+            .then(response => response.json())
+            .then(data => {
+                //nombres
+                const labels = data.map(item => item.estilo);
+                //EstiloReproducciones
+                const values = data.map(item => item.totalReproducciones);
+                //nuestra estadistica
+                const ctx = document.getElementById('EstiloReproduccionesChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Grupos Reproducciones por Genero',
+                            data: values,
+                            backgroundColor: 'rgba(193, 54, 235, 0.5)',
+                            borderColor: 'rgb(178, 54, 235)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                             y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+
+
+
+
+        });
+
+
+
+
+
+
+
+        
+ </script>
+{% endblock %}

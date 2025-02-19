@@ -16,28 +16,11 @@ class PlaylistRepository extends ServiceEntityRepository
         parent::__construct($registry, Playlist::class);
     }
 
-    //    /**
-    //     * @return Playlist[] Returns an array of Playlist objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Playlist
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function obtenerLikesPorPlaylist(): array
+    {
+        return $this->createQueryBuilder('p') // 'p' es el alias de la entidad de la tabla de playlists
+            ->select('p.nombre AS playlist, p.likes AS totalLikes')
+            ->getQuery()
+            ->getResult();
+    }
 }

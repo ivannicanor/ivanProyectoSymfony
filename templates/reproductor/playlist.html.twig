@@ -158,6 +158,24 @@
             border-radius: 5px;
         }
 
+        .audio-player button {
+        background-color: #121212; /* Fondo oscuro */
+        color: white; /* Texto blanco */
+        border: 2px solid #1DB954; /* Borde verde */
+        padding: 10px 15px;
+        margin: 0 10px;
+        border-radius: 50px; /* Bordes redondeados */
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+}
+
+.audio-player button:hover {
+    background-color: #1DB954; /* Verde de Spotify */
+    color: black; /* Texto negro al hacer hover */
+}
+
         
 
     </style>
@@ -224,7 +242,9 @@
         <!--Aqui tenemos nuestro div de audio aqui podemos observar como es nuestra barra de musica empieza oculta hasta que se muestre una cancion-->
         <!-- Audio Player -->
         <div class="audio-player" id="audio-player" style="display: none">
+            <button id="prev-btn">Anterior</button>
             <audio id="audio-element" controls></audio>
+            <button id="next-btn">Siguiente</button>
         </div>
 
         <!-- Footer -->
@@ -235,38 +255,97 @@
 
     
 
-    <script>
 
 
+<script>
+    const audioElement = document.getElementById('audio-element');
+    const songCards = document.querySelectorAll('.song-card');
+    const divReproductor = document.getElementById('audio-player');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
 
 
+//javascript buscador
+ document.addEventListener("DOMContentLoaded", function () {
 
+        //obtiene mi barra de busqueda
+        let buscador = document.querySelector("header input[type='text']");
+        //obtiene mis canciones
+        let misCanciones = document.querySelectorAll(".song-card");
 
+        buscador.addEventListener("input", function () {
+            let textoEnElBuscador = buscador.value.toLowerCase();
 
-<!-- aqui hacemos que suene la cancion -->
-        const audioElement = document.getElementById('audio-element');
-        const songCards = document.querySelectorAll('.song-card');
-        const divReproductor = document.getElementById('audio-player');
-<!-- aqui le asignamos el click para que ponga la musical al clickar -->
-        songCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const audioSource = card.getAttribute('data-audio');
-                if (audioSource) {
-                    audioElement.src = audioSource;
-                    divReproductor.style="display: flex"
-                    audioElement.play();
+            misCanciones.forEach(card => {
+                let songName = card.querySelector("p").textContent.toLowerCase();
+                
+                if (songName.includes(textoEnElBuscador)) {
+                    card.style.display = "flex"; // Mostrar si coincide
+                } else {
+                    card.style.display = "none"; // Ocultar si no coincide
                 }
             });
         });
+    });
+    
 
 
+    // Convierte a arrayel from
+    let songArray = Array.from(songCards);
+    let indexActual = 0;
 
+    // Función para resaltar la canción en reproducción
+    function resaltarCancionReproducida() {
+        songArray.forEach(card => card.style.backgroundColor = "#181818"); // Restaurar fondo
+        songArray[indexActual].style.backgroundColor = "#1DB954"; // Resaltar actual
+    }
 
+    // Función para reproducir una canción según el índice
+    function playSong(index) {
+        if (index >= 0 && index < songArray.length) {
+            const audioSource = songArray[index].getAttribute('data-audio');
+            if (audioSource) {
+                audioElement.src = audioSource;
+                divReproductor.style.display = "flex";
+                audioElement.play();
+                indexActual = index;
+                resaltarCancionReproducida(); // Resaltar canción actual
+            }
+        }
+    }
 
+    // Evento click en cada tarjeta de canción
+    songCards.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            playSong(index);
+        });
+    });
 
+    // Evento para pasar a la siguiente canción automáticamente
+    audioElement.addEventListener('ended', () => {
+        let siguienteIndex = indexActual + 1;
+        if (siguienteIndex < songArray.length) {
+            playSong(siguienteIndex);
+        }
+    });
 
+    // Evento botón "Siguiente"
+    nextBtn.addEventListener('click', () => {
+        let siguienteIndex = indexActual + 1;
+        if (siguienteIndex < songArray.length) {
+            playSong(siguienteIndex);
+        }
+    });
 
-    </script>
+    // Evento botón "Anterior"
+    prevBtn.addEventListener('click', () => {
+        let anteriorIndex = indexActual - 1;
+        if (anteriorIndex >= 0) {
+            playSong(anteriorIndex);
+        }
+    });
+</script>
+
 {% endblock %}
 
 

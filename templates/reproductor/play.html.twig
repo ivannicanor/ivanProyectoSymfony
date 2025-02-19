@@ -45,12 +45,21 @@
             height: 30px;
         }
 
+        .usuarioContenedor{
+            display: flex;
+            align-items: center; /* Alinea verticalmente */
+            justify-content: flex-start; /* Alinea el contenido a la izquierda */
+            gap: 10px; /* Espacio entre el botón y la imagen */
+            padding: 5px
+        }
         .usuarioContenedor img {
+        
         height: 30px;
-        width: 30px; /* Asegura que el ancho sea igual a la altura */
-        border-radius: 50%; /* Hace que la imagen sea circular */
-        object-fit: cover; /* Ajusta la imagen dentro del contenedor sin deformarla */
-        background-color:rgb(228, 127, 13);
+        width: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: rgb(228, 127, 13);
+        
         }
 
         nav {
@@ -211,8 +220,10 @@
             </div>
 
            <!--  aqui añadiremos el icono de incio de Sesion -->
+
             <div class="usuarioContenedor">
-                <img src="/otrasImagenes/usuario.png" alt="User">
+            <a href="{{ path('app_logout') }}"><p>Cerrar Sesion</p></a>
+                <a href="{{ path('app_login') }}"><img src="/otrasImagenes/usuario.png" alt="User"></a>
             </div>
 
         </header>
@@ -286,11 +297,35 @@
     <script>
 
 
+//javascript buscador
+ document.addEventListener("DOMContentLoaded", function () {
+
+        //obtiene mi barra de busqueda
+        let buscador = document.querySelector("header input[type='text']");
+        //obtiene mis canciones
+        let misCanciones = document.querySelectorAll(".song-card");
+
+        buscador.addEventListener("input", function () {
+            let textoEnElBuscador = buscador.value.toLowerCase();
+
+            misCanciones.forEach(card => {
+                let songName = card.querySelector("p").textContent.toLowerCase();
+                
+                if (songName.includes(textoEnElBuscador)) {
+                    card.style.display = "flex"; // Mostrar si coincide
+                } else {
+                    card.style.display = "none"; // Ocultar si no coincide
+                }
+            });
+        });
+    });
 
 
 
 
 
+
+//sonar Canciones
 <!-- aqui hacemos que suene la cancion -->
         const audioElement = document.getElementById('audio-element');
         const songCards = document.querySelectorAll('.song-card');
@@ -308,6 +343,7 @@
         });
 
 
+//pulsarCancion
 function pulsarCancionesInvisiblePlaylist() {
      const divCancion = document.getElementById('divCancion');
       const divPlaylist = document.getElementById('divPlaylist');
@@ -321,6 +357,7 @@ function pulsarCancionesInvisiblePlaylist() {
 
 }
 
+//pulsarPlaylist
 function pulsarPlaylistInvisibleCancion() {
      const divCancion = document.getElementById('divCancion');
       const divPlaylist = document.getElementById('divPlaylist');
@@ -332,6 +369,7 @@ function pulsarPlaylistInvisibleCancion() {
      botonCanciones.style="background-color: #121212";
      botonPlaylist.style="background-color:rgb(16, 83, 3)";
 }
+
 
 
 

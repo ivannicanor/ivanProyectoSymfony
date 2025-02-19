@@ -16,28 +16,17 @@ class CancionRepository extends ServiceEntityRepository
         parent::__construct($registry, Cancion::class);
     }
 
-    //    /**
-    //     * @return Cancion[] Returns an array of Cancion objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function obtenerReproduccionesPorEstilo(): array
+{
 
-    //    public function findOneBySomeField($value): ?Cancion
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    //tabla por cada estilo sus reproduccioens
+    return $this->createQueryBuilder('c')
+        ->select('e.nombre AS estilo, SUM(pc.reproducciones) AS totalReproducciones')
+        ->join('c.genero', 'e') // Relación con Estilo
+        ->join('App\Entity\PlaylistCancion', 'pc', 'WITH', 'pc.cancion = c') // Relación con PlaylistCancion
+        ->groupBy('e.id')
+        ->getQuery()
+        ->getResult();
+}
+
 }

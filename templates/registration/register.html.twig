@@ -1,0 +1,96 @@
+{% block body %}
+ <style>
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor del formulario */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    text-align: center;
+}
+
+
+
+/* Títulos */
+h1 {
+    color: #1db954;
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #222;
+    color: #fff;
+    font-size: 16px;
+}
+
+
+
+/* Placeholder color */
+input::placeholder {
+    color: #aaa;
+}
+
+/* Botón */
+button {
+    width: 100%;
+    background-color: #1db954;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #17a347;
+}
+
+/* Mensajes de error */
+.error-message {
+    color: #ff4444;
+    background: #330000;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+</style>
+    <div class="login-container">
+        <h1>Registro</h1>
+
+        {{ form_start(registrationForm, {'attr': {'class': 'formulario-registro'}}) }}
+
+        {{ form_row(registrationForm.nombre, {'attr': {'placeholder': 'Nombre'}}) }}
+        {{ form_row(registrationForm.email, {'attr': {'placeholder': 'Correo Electrónico'}}) }}
+        {{ form_row(registrationForm.fechaNacimiento, {'attr': {'placeholder': 'Fecha de Nacimiento'}}) }}
+        {{ form_row(registrationForm.password, {'attr': {'placeholder': 'Contraseña'}}) }}
+        <div class="rolesForm" >
+        {{ form_row(registrationForm.roles, {'attr': {'placeholder': 'Rol'}}) }}
+        </div>
+
+        <button type="submit">Registrarse</button>
+
+        {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}
+
