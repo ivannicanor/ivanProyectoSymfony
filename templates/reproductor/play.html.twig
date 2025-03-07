@@ -138,6 +138,21 @@
             margin-bottom: 20px;
             font-weight: bold;
         }
+
+         .divMisCanciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            overflow-x: scroll;
+            scrollbar-width: none
+        }
+         .divMisCanciones h1 {
+            width: 100%;
+            text-align: left; /* Alineado a la izquierda */
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
         
 
 
@@ -163,6 +178,24 @@
         }
 
         .song-card p {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 0;
+        }
+
+        .formulario{
+             background-color: #181818;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 20%
+        }
+        .formulario p {
             color: white;
             font-size: 16px;
             font-weight: bold;
@@ -204,6 +237,7 @@
 
 
     <!--aqui podemos observar la parte superior de la pagina-->
+<<<<<<< Updated upstream
     <div class="w-full h-screen flex flex-col">
         <!-- Header -->
         <header>
@@ -251,33 +285,167 @@
                             <p>{{ song.name }}</p>
                         </div>
                     {% endfor %}
+=======
+        <div class="w-full h-screen flex flex-col">
+            <!-- Header -->
+            <header>
+                <div class="divPrincipal"> 
+                <a href="{{ path('reproductor_play') }}">
+                <img src="/otrasImagenes/logo.png"></img>
+                MySpotify</a>
+                </div>
+                <!--  barra de busqueda-->
+                <div class="search-bar">
+                    <input type="text" placeholder="¿Qué quieres reproducir?">
+                    <!--aqui tenemos el reproductor que aun no hace nada-->
+                    <button>Buscar</button>
+>>>>>>> Stashed changes
                 </div>
 
+            <!--  aqui añadiremos el icono de incio de Sesion -->
 
-                
-                 <div class="divPlaylist" id="divPlaylist">
-                 <h1>Tus Playlist</h1>
-        <!-- Iteramos sobre las playlists pasadas desde el controlador -->
-        {% for playlist in playlists %}
-            <div class="song-card" >
-             <a href="{{ path('playlist_show', { id: playlist.id }) }}">
-                <!-- Imagen de la canción -->
-                <img src="{{ asset(playlist.imagen) }}" alt="Imagen de {{ playlist.nombre }}">
-                
-                
+                <div class="usuarioContenedor">
+                {% if app.session.get('usuario')!=null %}
+                    <p>Hola,{{app.user.nombre}}</p>
+                                   
+                {% endif %}
+                <a href="{{ path('app_logout') }}"><p>Cerrar Sesion</p></a>
+                    <a href="{{ path('app_login') }}"><img src="/otrasImagenes/usuario.png" alt="User"></a>
+                </div>
 
-                <!-- Nombre de la canción -->
-                <p>{{ playlist.nombre }}</p>
+            </header>
 
-                <!-- Mostramos los 'likes' si lo deseas -->
-                <p>Likes: {{ playlist.likes }}</p>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
-               
-            </main>
+            <!--aqui tenemos la barra que nos mostrara los botones cancion y playlist-->
+            <div class="content-wrapper">
+                <!-- Sidebar -->
+                <nav>
+                    <ul>
+                        <li><button onclick="pulsarCancionesInvisiblePlaylist()" id="botonCanciones">Canciones</button></li>
+                        <li><button onclick="pulsarPlaylistInvisibleCancion()" id="botonPlaylist">Playlist</button></li>
+                        <!-- Si app.user no esta vacio y ademas sea rol user muestras el boton mis playlist -->
+                        {% if app.user and app.user.roles[0] == "ROLE_USER" %}
+                        <li><button onclick="pulsarPlaylistInvisibleCancionPlaylist()" id="botonMisPlaylist">Mis Playlist</button></li>
+                        {% endif %}
+                        
+                        <!-- Si app.user no esta vacio y ademas sea rol user muestras el formulario -->
+                        {% if app.user and app.user.roles[0]=="ROLE_USER" %}
+                            <li><button onclick="CrearFormulario()" id="botonCrearFormularioPlaylist">Crear Formulario Playlist</button></li>
+                        
+                        
+                        {% endif %}
+                        <!-- Ir a manager -->
+                        <!-- el  app.user.roles[0] sirve para obtener rol pero se puede usar para todo nombre email lo que sea-->
+                        <!-- Si app.user no esta vacio y ademas sea rol manager el boton manager -->
+                        {% if app.user and app.user.roles[0]=="ROLE_MANAGER" %}
+                            <li><a href="{{ path('estadisticas') }}"><button>Ir al manager</button></a></li>
+                        
+                        
+                        {% endif %}
+                        <!-- Si app.user no esta vacio y ademas sea rol admin el boton ir al admin -->
+                        {% if app.user and app.user.roles[0]=="ROLE_ADMIN" %}
+                            <li> <a href="{{ path('admin') }}"><button>Ir al admin</button></a></li>                            
+                        
+                        
+                        {% endif %}
+                        
+                        
+                        
+
+                        
+
+                        
+                        
+                        
+                    </ul>
+                </nav>
+
+    <!--aqui tenemos nuestras canciones-->
+    <!-- Main Content -->
+    <main>
+                    
+        <div class="divCancion" id="divCancion">
+            <h1>Tus canciones</h1>
+            <!--Aqui podemos observar nuestro for de la BBDD que nos muestra todas nuestras canciones-->
+                {% for song in songs %}
+                    <div class="song-card" data-audio="{{ song.audio }}">
+                        <img src="{{ song.imagen }}" alt="Imagen de {{ song.name }}">
+                        <p>{{ song.name }}</p>
+                    </div>
+                {% endfor %}
         </div>
+
+
+                    
+        <div class="divPlaylist" id="divPlaylist">
+            <h1>Playlist</h1>
+            <!-- Iteramos sobre las playlists pasadas desde el controlador -->
+            {% for playlist in playlists %}
+                <div class="song-card" >
+                    <a href="{{ path('playlist_show', { id: playlist.id }) }}">
+                        <!-- Imagen de la canción -->
+                        <img src="{{ asset(playlist.imagen) }}" alt="Imagen de {{ playlist.nombre }}">
+
+                        <!-- Nombre de la canción -->
+                        <p>{{ playlist.nombre }}</p>
+
+                        <!-- Mostramos los 'likes' si lo deseas -->
+                        <p>Likes: {{ playlist.likes }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        {# al no estar logeado como user no saldra  por el if #}
+        {% if app.user and app.user.roles[0]=="ROLE_USER" %}
+                           
+                        
+                            
+    
+            <div class="divMisCanciones" id="divMisCanciones">
+                <h1>Mis Playlist</h1>
+                <div id="formularioMisCanciones" class="formulario" style="display: none"></div>
+                <!-- Iteramos sobre las playlists pasadas desde el controlador -->
+                {% for playlistUsuario in playlistsUsuario %}
+                    <div class="song-card">
+                        <a href="{{ path('playlist_show', { id: playlistUsuario.id }) }}">
+                        <!-- Imagen de la canción -->
+                        <img src="{{ asset(playlistUsuario.imagen) }}" alt="Imagen de {{ playlistUsuario.nombre }}">
+            
+                        <!-- Nombre de la canción -->
+                        <p>{{ playlistUsuario.nombre }}</p>
+
+                        <!-- Mostramos los 'likes' si lo deseas -->
+                        <p>Likes: {{ playlistUsuario.likes }}</p>
+                        </a>
+                    
+                        
+                        <div class="divCancion" id="divCancion">
+                            <h1>añadir Cancion</h1>
+                            <!--Aqui podemos observar nuestro for de la BBDD que nos muestra todas nuestras canciones de usuario-->
+                            <div class="song-select">
+                                <select id="songSelect{{ playlistUsuario.id }}">
+                                {% for song in songs %}
+                                    <option value="{{ song.name }}" data-song-id="{{ song.id }}" >{{ song.name }}</option>
+                                {% endfor %}
+                                </select>
+                                {# boton funcionalidad #}
+                                <button onclick="añadirCancionPlaylist('songSelect{{ playlistUsuario.id }}','{{ playlistUsuario.id }}')">añadir Cancion</button> 
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                {% endfor %}
+
+            </div>
+        
+        
+        {% endif %}
+        
+    </div>               
+    </main>
+
         
 
         <!--Aqui tenemos nuestro div de audio aqui podemos observar como es nuestra barra de musica empieza oculta hasta que se muestre una cancion-->
@@ -292,11 +460,16 @@
         </footer>
     </div>
 
-    
-
     <script>
+        //javascript buscador
+        document.addEventListener("DOMContentLoaded", function () {
 
+            //obtiene mi barra de busqueda
+            let buscador = document.querySelector("header input[type='text']");
+            //obtiene mis canciones
+            let misCanciones = document.querySelectorAll(".song-card");
 
+<<<<<<< Updated upstream
 //javascript buscador
  document.addEventListener("DOMContentLoaded", function () {
 
@@ -339,10 +512,25 @@
                     divReproductor.style="display: flex"
                     audioElement.play();
                 }
+=======
+            buscador.addEventListener("input", function () {
+                let textoEnElBuscador = buscador.value.toLowerCase();
+
+                misCanciones.forEach(card => {
+                    let songName = card.querySelector("p").textContent.toLowerCase();
+                        
+                        if (songName.includes(textoEnElBuscador)) {
+                            card.style.display = "flex"; // Mostrar si coincide
+                        } else {
+                            card.style.display = "none"; // Ocultar si no coincide
+                        }
+                });
+>>>>>>> Stashed changes
             });
         });
 
 
+<<<<<<< Updated upstream
 //pulsarCancion
 function pulsarCancionesInvisiblePlaylist() {
      const divCancion = document.getElementById('divCancion');
@@ -369,9 +557,173 @@ function pulsarPlaylistInvisibleCancion() {
      botonCanciones.style="background-color: #121212";
      botonPlaylist.style="background-color:rgb(16, 83, 3)";
 }
+=======
+>>>>>>> Stashed changes
 
 
 
+
+        //sonar Canciones
+        <!-- aqui hacemos que suene la cancion -->
+            const audioElement = document.getElementById('audio-element');
+            const songCards = document.querySelectorAll('.song-card');
+            const divReproductor = document.getElementById('audio-player');
+        <!-- aqui le asignamos el click para que ponga la musical al clickar -->
+            songCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const audioSource = card.getAttribute('data-audio');
+                    if (audioSource) {
+                        audioElement.src = audioSource;
+                        divReproductor.style="display: flex"
+                        audioElement.play();
+                    }
+                });
+            });
+
+
+        //pulsarCancion
+        function pulsarCancionesInvisiblePlaylist() {
+            const divCancion = document.getElementById('divCancion');
+            const divPlaylist = document.getElementById('divPlaylist');
+            const divMisCanciones = document.getElementById('divMisCanciones');
+            const botonCanciones = document.getElementById('botonCanciones');
+            const botonPlaylist = document.getElementById('botonPlaylist');
+            const botonMisPlaylist = document.getElementById('botonMisPlaylist');
+
+            
+
+            divCancion.style="display: flex";
+            divPlaylist.style="display: none";
+            divMisCanciones.style="display: none";
+            botonCanciones.style="background-color:rgb(16, 83, 3)";
+            botonPlaylist.style="background-color: #121212";
+            botonMisPlaylist.style="background-color: #121212";
+
+        }
+
+        //pulsarPlaylist
+        function pulsarPlaylistInvisibleCancion() {
+            const divCancion = document.getElementById('divCancion');
+            const divPlaylist = document.getElementById('divPlaylist');
+            const divMisCanciones = document.getElementById('divMisCanciones');
+            const botonCanciones = document.getElementById('botonCanciones');
+            const botonPlaylist = document.getElementById('botonPlaylist');
+            const botonMisPlaylist = document.getElementById('botonMisPlaylist');
+
+            
+
+            divPlaylist.style="display: flex";
+            divCancion.style="display: none";
+            divMisCanciones.style="display: none";
+            botonPlaylist.style="background-color:rgb(16, 83, 3)";
+            botonCanciones.style="background-color: #121212";
+            botonMisPlaylist.style="background-color: #121212";
+        }
+
+        
+         //pulsarPlaylistInvisibleCancionPlaylist
+        function pulsarPlaylistInvisibleCancionPlaylist() {
+            const divCancion = document.getElementById('divCancion');
+            const divPlaylist = document.getElementById('divPlaylist');
+            const divMisCanciones = document.getElementById('divMisCanciones');
+            const botonCanciones = document.getElementById('botonCanciones');
+            const botonPlaylist = document.getElementById('botonPlaylist');
+            const botonMisPlaylist = document.getElementById('botonMisPlaylist');
+
+            divMisCanciones.style="display: flex";
+            divCancion.style="display: none";
+            divPlaylist.style="display: none";
+            
+            botonMisPlaylist.style="background-color:rgb(16, 83, 3)";
+            botonCanciones.style="background-color: #121212";
+            botonPlaylist.style="background-color: #121212";
+        }
+
+
+        function añadirCancionPlaylist(selectId,playlistId) {
+            //obtener select
+            let selectElement = document.getElementById(selectId);
+            //obtener option
+            let selectedOption = selectElement.options[selectElement.selectedIndex];
+
+            let playlistNombre = selectedOption.value;  // Nombre de la canción
+            let cancionId = selectedOption.getAttribute('data-song-id'); // ID de la canción
+
+            fetch(`/playlist/añadircancion/${playlistId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    cancionId: cancionId
+                })
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message));
+        }
+
+        function CrearFormulario() {
+            let divMiFormulario = document.getElementById("formularioMisCanciones")
+            let pNombre = document.createElement("p")
+            let inputNombre = document.createElement("input")
+            let pLikes = document.createElement("p")
+            let inputLikes = document.createElement("input")
+            let botonCrearPlaylist = document.createElement("button")
+
+            divMiFormulario.innerHTML="";
+            inputNombre.id="inputNombre";
+            inputNombre.type="text";
+            inputLikes.id="inputLikes";
+            inputLikes.type="number";
+
+            pNombre.textContent="Nombre Playlist"
+            pLikes.textContent="Likes Playlist"
+
+            botonCrearPlaylist.onclick = function() {
+            CrearPlaylist();
+            };
+            botonCrearPlaylist.textContent="crear Playlist";
+            divMiFormulario.style.display="block"
+            divMiFormulario.appendChild(pNombre)
+            divMiFormulario.appendChild(inputNombre)
+            divMiFormulario.appendChild(pLikes)
+            divMiFormulario.appendChild(inputLikes)
+            divMiFormulario.appendChild(botonCrearPlaylist)
+
+            
+        }
+    
+
+        function CrearPlaylist() {
+        
+    
+        let nombrePlaylist = document.getElementById("inputNombre").value;
+        let likesPlaylist = document.getElementById("inputLikes").value;
+
+        console.log(nombrePlaylist);
+        console.log(likesPlaylist);
+
+
+          fetch(`/playlist/crearPlaylist`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    nombrePlaylist: nombrePlaylist,
+                    likesPlaylist: likesPlaylist
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message)
+                location.reload()
+                }
+
+                );
+            
+            
+        }
 
 
 

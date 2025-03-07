@@ -28,5 +28,21 @@ class CancionRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 }
+<<<<<<< Updated upstream
+=======
+
+public function obtenerCancionesMasReproducidas(int $limite = 10): array
+{
+    return $this->createQueryBuilder('c')
+        ->select('c.titulo AS cancion, SUM(pc.reproducciones) AS totalReproducciones')
+        ->join('App\Entity\PlaylistCancion', 'pc', 'WITH', 'pc.cancion = c') // Relación con PlaylistCancion
+        ->groupBy('c.id') // Agrupar por canción
+        ->orderBy('totalReproducciones', 'DESC') // Ordenar de mayor a menor
+        ->setMaxResults($limite) // Limitar el número de resultados (por defecto 10)
+        ->getQuery()
+        ->getResult();
+}
+
+>>>>>>> Stashed changes
 
 }

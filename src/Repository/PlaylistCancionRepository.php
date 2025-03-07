@@ -16,12 +16,20 @@ class PlaylistCancionRepository extends ServiceEntityRepository
         parent::__construct($registry, PlaylistCancion::class);
     }
 
+<<<<<<< Updated upstream
     public function obtenerReproduccionesPorPlaylist(): array
+=======
+    public function obtenerReproduccionesPorPlaylist(int $limite = 10): array
+>>>>>>> Stashed changes
     {
         return $this->createQueryBuilder('pc')
             ->select('p.nombre AS playlist, SUM(pc.reproducciones) AS totalReproducciones')
             ->join('pc.playlist', 'p')
             ->groupBy('p.id')
+<<<<<<< Updated upstream
+=======
+            ->setMaxResults($limite) // Limitar el número de resultados (por defecto 10)
+>>>>>>> Stashed changes
             ->getQuery()
             ->getResult();
     }

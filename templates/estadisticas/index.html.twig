@@ -6,16 +6,179 @@
 
 {% block body %}
 
+<<<<<<< Updated upstream
     <div class="container">
+=======
+<!-- Header -->
+        <header>
+            <div class="divPrincipal"> 
+            <a href="{{ path('reproductor_play') }}">
+            <img src="/otrasImagenes/logo.png"></img>
+            MySpotify</a>
+            </div>
+            
+
+           <!--  aqui añadiremos el icono de incio de Sesion -->
+            <div class="usuarioContenedor">
+                {% if app.session.get('usuario')!=null %}
+                    <p>Hola,{{app.user.nombre}}</p>        
+                {% endif %}
+                <a href="{{ path('app_logout') }}"><p>Cerrar Sesion</p></a>
+                    <a href="{{ path('app_login') }}"><img src="/otrasImagenes/usuario.png" alt="User"></a>
+                </div>
+
+        </header>
+
+
+    <div class="container">
+    <br><br>
+>>>>>>> Stashed changes
         <h2>Estadísticas de Reproducciones por Playlist</h2>
         {# las estadisticas #}
         <canvas id="likesChart"></canvas>
         <canvas id="reproduccionesChart"></canvas>
         <canvas id="EdadesChart"></canvas>
+<<<<<<< Updated upstream
         <canvas id="EstiloReproduccionesChart"></canvas>
         
     </div>
 
+=======
+        <canvas id="CancionesMasReproducidas"></canvas>
+        <canvas id="EstiloReproduccionesChart"></canvas>
+        
+        
+    </div>
+
+    
+
+    <style>
+{# parte principal #}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* Ahora usa el 100% sin incluir la barra de desplazamiento */
+    padding: 15px 20px; /* Añade padding para separación */
+    background-color: #1DB954;
+    position: fixed; /* Fija el header en la parte superior */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    box-sizing: border-box; /* Evita que el padding afecte el ancho total */
+}
+
+.divPrincipal img{
+            height: 30px;
+        }
+
+.usuarioContenedor{
+            display: flex;
+            align-items: center; /* Alinea verticalmente */
+            justify-content: flex-start; /* Alinea el contenido a la izquierda */
+            gap: 10px; /* Espacio entre el botón y la imagen */
+            padding: 5px
+        }
+.usuarioContenedor img {
+        
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+        background-color: rgb(228, 127, 13);
+        
+}
+
+
+
+/* ======= Estilos Generales y canvas ======= */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #000; /* Fondo negro */
+    color: black; /* Texto blanco */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ======= Contenedor Principal ======= */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    background: #111; /* Fondo oscuro */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ======= Títulos ======= */
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #1DB954; /* Verde de Spotify */
+    text-transform: uppercase;
+}
+
+/* ======= Estilos de los Gráficos ======= */
+canvas {
+    max-width: 100%;
+    height: 400px;
+    margin: 20px auto;
+    display: block;
+    background: #222; /* Fondo oscuro para los gráficos */
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 255, 127, 0.2);
+}
+
+/* ======= Contenedor de Gráficos ======= */
+.chart-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* ======= Cada Gráfico ======= */
+.chart-wrapper {
+    flex: 1 1 45%;
+    max-width: 500px;
+    text-align: center;
+    padding: 10px;
+    background: #181818; /* Color oscuro intermedio */
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 255, 127, 0.2);
+}
+
+/* ======= Botones estilo Spotify ======= */
+button {
+    background-color: #1DB954;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #17a74a;
+}
+
+
+
+
+    </style>
+
+>>>>>>> Stashed changes
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
 
@@ -95,7 +258,11 @@
             .then(response => response.json())
             .then(data => {
                 //nombres
+<<<<<<< Updated upstream
                 const labels = data.map(item => item.edades);
+=======
+                const labels = data.map(item => item.edad);
+>>>>>>> Stashed changes
                 //edades
                 const values = data.map(item => item.numeroConEsaEdad);
                 //nuestra estadistica
@@ -125,6 +292,58 @@
 
 
 
+<<<<<<< Updated upstream
+=======
+
+
+        //CancionMasReproducidas
+        fetch("{{ path('estadisticas_datosCancionReproduccion') }}")
+            .then(response => response.json())
+            .then(data => {
+                //nombres
+                const labels = data.map(item => item.cancion);
+                //EstiloReproducciones
+                const values = data.map(item => item.totalReproducciones);
+                //nuestra estadistica
+                const ctx = document.getElementById('CancionesMasReproducidas').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Canciones Mas Reproducidas',
+                            data: values,
+                            backgroundColor: 'rgba( 255, 249, 51 )',
+                            borderColor: 'rgb( 246, 255, 51 )',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                             y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
              //EstiloReproducciones
         fetch("{{ path('estadisticas_datosEstiloReproducciones') }}")
             .then(response => response.json())
@@ -170,6 +389,10 @@
 
 
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         
  </script>
 {% endblock %}

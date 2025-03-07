@@ -20,9 +20,17 @@ security:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
+<<<<<<< Updated upstream
             logout:
                 path: app_logout  # Ruta del logout
                 target: app_login # Redirigir después del logout
+=======
+            access_denied_url: app_acceso_denegado
+            logout:
+                path: app_logout  # Ruta del logout
+                target: app_login # Redirigir después del logout
+        
+>>>>>>> Stashed changes
                 
                 
 

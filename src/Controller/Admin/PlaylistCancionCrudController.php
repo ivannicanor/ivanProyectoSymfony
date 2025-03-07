@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\CrearLogController;
 use App\Entity\PlaylistCancion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -19,6 +20,7 @@ class PlaylistCancionCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+       
        return [
             //ocultar el id no queremos que salga
             IdField::new('id')->hideOnForm(),

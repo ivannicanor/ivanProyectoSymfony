@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceso Denegado{% endblock %}
+
+{% block body %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #8B0000; /* Rojo oscuro */
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Centrar en toda la pantalla */
+        text-align: center;
+    }
+
+    .error-container {
+        background-color: #A52A2A; /* Marrón rojizo */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        width: 50%;
+        max-width: 500px;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    .error-container h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .error-icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: yellow;
+    }
+
+    .btn-home {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #FFD700;
+        color: #8B0000;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: background 0.3s;
+    }
+
+    .btn-home:hover {
+        background-color: #FFC107;
+    }
+
+{# Animacion #}
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+</style>
+
+<div class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h1>Access Denied</h1>
+    <p>No tienes permisos para acceder a esta página.</p>
+    <a href="/reproductor" class="btn-home">Volver al inicio</a>
+</div>
+{% endblock %}

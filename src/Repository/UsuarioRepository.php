@@ -48,6 +48,7 @@ class UsuarioRepository extends ServiceEntityRepository implements UserLoaderInt
     //estadistica edades
 
     public function obtenerEdadesPorUsuario(): array
+<<<<<<< Updated upstream
     {
         return $this->createQueryBuilder('u') // 'u' es el alias de la entidad de la tabla de usuario
             ->select('u.fechaNacimiento AS edades,COUNT(u.fechaNacimiento) AS numeroConEsaEdad')
@@ -55,4 +56,14 @@ class UsuarioRepository extends ServiceEntityRepository implements UserLoaderInt
             ->getQuery()
             ->getResult();
     }
+=======
+{
+    return $this->createQueryBuilder('u')
+        ->select('u.fechaNacimiento', 'COUNT(u.id) AS numeroConEsaEdad')
+        ->groupBy('u.fechaNacimiento')
+        ->getQuery()
+        ->getResult();
+}
+
+>>>>>>> Stashed changes
 }

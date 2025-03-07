@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\CrearLogController;
 use App\Entity\Cancion;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -20,6 +21,9 @@ class CancionCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // Llamar a CrearLogController para registrar la acción
+        $this->forward(CrearLogController::class . '::crearLog', ['accion' => 'Crear cancion Controller']);
+        
         return [
             //ocultar el id no queremos que salga
             IdField::new('id')->hideOnForm(),
@@ -31,7 +35,8 @@ class CancionCrudController extends AbstractCrudController
             TextField::new('imagen', 'Imagen'),
             AssociationField::new('genero', 'Genero')
             ->setFormTypeOption('by_reference', true),
-            TextField::new('archivo', 'Cancion'),             
+            TextField::new('archivo', 'Cancion'), 
+                        
 
            
         ];

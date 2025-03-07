@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\CrearLogController;
 use App\Entity\Cancion;
 use App\Entity\Estilo;
 use App\Entity\Playlist;
@@ -44,6 +45,7 @@ class DashBoardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+
         return[
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
              MenuItem::linkToCrud('Cancion', 'fas fa-list', Cancion::class),

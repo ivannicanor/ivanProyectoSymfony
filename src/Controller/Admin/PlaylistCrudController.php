@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\CrearLogController;
 use App\Entity\Playlist;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -20,6 +21,8 @@ class PlaylistCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // Llamar a CrearLogController para registrar la acción
+        $this->forward(CrearLogController::class . '::crearLog', ['accion' => 'Crear Playlist']);
        return [
             //ocultar el id no queremos que salga
             IdField::new('id')->hideOnForm(),

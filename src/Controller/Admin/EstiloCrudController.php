@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\CrearLogController;
 use App\Entity\Estilo;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -18,6 +19,9 @@ class EstiloCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // Llamar a CrearLogController para registrar la acción
+        $this->forward(CrearLogController::class . '::crearLog', ['accion' => 'Crear Estilo']);
+
         return [
             IdField::new('id')->hideOnForm(),                  
             TextField::new('nombre', 'Nombre del estilo'),  

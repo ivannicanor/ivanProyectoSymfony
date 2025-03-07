@@ -39,6 +39,56 @@ final class EstadisticasController extends AbstractController
         return $this->json($datosLikes); // convierte el array $datos en una respuesta JSON.
     }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+    //edades
+    #[Route('/estadisticas/datosEdades', name: 'estadisticas_datosEdades')]
+    public function obtenerDatosEdades(UsuarioRepository $UsuarioRepository): JsonResponse
+    {
+        // Obtener los datos de fecha de nacimiento y cantidad de usuarios con esa fecha
+    $datos = $UsuarioRepository->obtenerEdadesPorUsuario();
+    
+    // Array para agrupar las edades y su respectiva cantidad de usuarios
+    $edadesAgrupadas = [];
+
+    foreach ($datos as $dato) {
+        // Verificar que la fecha de nacimiento sea un objeto DateTime
+        if ($dato['fechaNacimiento'] instanceof \DateTime) {
+            // Calcular la edad restando la fecha de nacimiento a la fecha actual
+            $edad = (new \DateTime())->diff($dato['fechaNacimiento'])->y;
+
+            // Si la edad aún no está en el array, inicializarla en 0
+            if (!isset($edadesAgrupadas[$edad])) {
+                $edadesAgrupadas[$edad] = 0;
+            }
+
+            // Sumar el número de usuarios que tienen esta edad
+            $edadesAgrupadas[$edad] += $dato['numeroConEsaEdad'];
+        }
+    }
+
+    // Formatear los datos en un array adecuado para la respuesta JSON
+    $resultado = [];
+    foreach ($edadesAgrupadas as $edad => $cantidad) {
+        $resultado[] = ['edad' => $edad, 'numeroConEsaEdad' => $cantidad];
+    }
+
+    // Retornar los datos en formato JSON
+    return $this->json($resultado);
+}
+
+    #[Route('/estadisticas/datosCancionReproduccion', name: 'estadisticas_datosCancionReproduccion')]
+    public function obtenerCancionesMasReproducidas(CancionRepository $CancionRepository): JsonResponse
+    {
+        $datosCancionReproduccion = $CancionRepository->obtenerCancionesMasReproducidas();
+
+        return $this->json($datosCancionReproduccion); // convierte el array $datos en una respuesta JSON.
+    }
+    
+
+=======
+>>>>>>> Stashed changes
     #[Route('/estadisticas/datosEdades', name: 'estadisticas_datosEdades')]
     public function obtenerDatosEdades(UsuarioRepository $UsuarioRepository): JsonResponse
     {
@@ -57,6 +107,10 @@ final class EstadisticasController extends AbstractController
         return $this->json($datosEdades); // convierte el array $datos en una respuesta JSON.
     }
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> 931bc20cef17cbd0647ed97f347b8f52c12b9395
+>>>>>>> Stashed changes
     #[Route('/estadisticas/datosEstiloReproducciones', name: 'estadisticas_datosEstiloReproducciones')]
     public function obtenerDatosEstiloReproducciones(CancionRepository $CancionRepository): JsonResponse
     {
@@ -65,4 +119,13 @@ final class EstadisticasController extends AbstractController
         return $this->json($datosEstiloReproduccion); // convierte el array $datos en una respuesta JSON.
     }
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+    
+
+=======
+>>>>>>> 931bc20cef17cbd0647ed97f347b8f52c12b9395
+>>>>>>> Stashed changes
 }

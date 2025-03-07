@@ -43,7 +43,15 @@ final class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+<<<<<<< Updated upstream
             return $this->redirectToRoute('app_login');
+=======
+            // Llamar a CrearLogController para registrar la acción
+            $this->forward(CrearLogController::class . '::crearLog', ['accion' => 'Registro de usuario']);
+            return $this->redirectToRoute('app_login');
+            
+            
+>>>>>>> Stashed changes
         }
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
